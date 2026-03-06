@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поздравление | DOLCE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #d4af37;
+            /* Metallic Gold */
+            --primary-light: #f1e5ac;
+            --accent: #ff8da1;
+            /* Soft Rose */
+            --white: #ffffff;
+            --bg-dark: #0f0f0f;
+            --env-color: #1e1e1e;
+            --env-color-dark: #121212;
+            --env-border: #d4af37;
+            --gold-gradient: linear-gradient(135deg, #d4af37 0%, #f1e5ac 50%, #d4af37 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-dark);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+        }
+
+        /* Background - Dynamic & Deep */
+        .background {
+            position: fixed;
+            inset: 0;
+            background: url('background.png') no-repeat center center/cover;
+            filter: brightness(0.4) contrast(1.2) blur(2px);
+            z-index: -1;
+            transform: scale(1.1);
+            transition: transform 10s ease-in-out;
+        }
+
+        body:hover .background {
+            transform: scale(1.05);
+        }
+
+        .ambient-glow {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 141, 161, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+            z-index: 0;
+        }
+
+        /* Envelope System */
+        .envelope-wrapper {
+            position: relative;
+            width: 550px;
+            height: 380px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: float 5s infinite ease-in-out;
+            z-index: 10;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotateX(10deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotateX(5deg);
+            }
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--env-color-dark);
+            background-image:
+                radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+            border-radius: 4px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+            transform-style: preserve-3d;
+        }
+
+        /* Front panels - Clearer definition */
+        .envelope-front {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .front-bottom {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 275px solid transparent;
+            border-right: 275px solid transparent;
+            border-bottom: 200px solid var(--env-color);
+            z-index: 12;
+            filter: drop-shadow(0 -10px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        .front-left {
+            position: absolute;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-top: 190px solid transparent;
+            border-bottom: 190px solid transparent;
+            border-left: 300px solid #1a1a1a;
+            z-index: 11;
+        }
+
+        .front-right {
+            position: absolute;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 190px solid transparent;
+            border-bottom: 190px solid transparent;
+            border-right: 300px solid #1a1a1a;
+            z-index: 11;
+        }
+
+        .top-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 275px solid transparent;
+            border-right: 275px solid transparent;
+            border-top: 210px solid #252525;
+            z-index: 15;
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Wax Seal - Enhanced realism */
+        .wax-seal {
+            position: absolute;
+            top: -105px;
+            left: -42px;
+            width: 84px;
+            height: 84px;
+            background: radial-gradient(circle at 30% 30%, #ff1e3c, #8b1525);
+            border-radius: 50%;
+            z-index: 20;
+            box-shadow:
+                0 10px 20px rgba(0, 0, 0, 0.5),
+                inset 0 -5px 10px rgba(0, 0, 0, 0.4),
+                inset 0 5px 10px rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-light);
+            font-size: 2.2rem;
+            font-weight: bold;
+            border: 2px solid #6d101d;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .wax-seal::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, transparent 45%, rgba(255, 255, 255, 0.1) 50%, transparent 55%);
+            background-size: 200% 200%;
+            animation: silverShine 3s infinite linear;
+        }
+
+        @keyframes silverShine {
+            0% {
+                background-position: -100% -100%;
+            }
+
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        .wax-seal::after {
+            content: 'DOLCE';
+            position: absolute;
+            bottom: -40px;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            color: var(--primary);
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+
+
+        /* Card - Glassmorphism & Premium feel */
+        .card {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(-1px) scale(0.98);
+            width: 96%;
+            height: 96%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 5;
+            color: #1a1a1a;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(255, 141, 161, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        /* Opened State */
+        .open {
+            animation: none !important;
+            transform: translateY(180px) rotateX(0deg) !important;
+        }
+
+        .open .top-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+            /* Move behind when open */
+        }
+
+        .open .wax-seal {
+            opacity: 0;
+            transform: scale(0.5) translateY(50px);
+        }
+
+        .open .card {
+            transform: translateX(-50%) translateY(-440px) translateZ(100px) scale(1.05);
+            z-index: 100;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.4);
+            height: auto;
+            min-height: 420px;
+            padding: 50px;
+            background: #ffffff;
+        }
+
+        .card-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            background: var(--gold-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+            line-height: 1.1;
+            font-weight: 700;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .card-content .greeting-text {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            font-weight: 400;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #444;
+            font-style: italic;
+            font-family: 'Playfair Display', serif;
+        }
+
+
+
+        /* Particles */
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ffb7c5, #ff8da1);
+            border-radius: 150% 0 150% 0;
+            pointer-events: none;
+            z-index: 200;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+                transform: translateY(0vh) rotate(45deg) scale(1);
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg) translateX(150px);
+                opacity: 0;
+            }
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 30px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .envelope-wrapper {
+                width: 85vw;
+                height: 55vw;
+            }
+
+            .front-bottom {
+                border-left-width: 42.5vw;
+                border-right-width: 42.5vw;
+                border-bottom-width: 32vw;
+            }
+
+            .front-left,
+            .front-right {
+                border-width: 27.5vw 42.5vw;
+            }
+
+            .top-flap {
+                border-left-width: 42.5vw;
+                border-right-width: 42.5vw;
+                border-top-width: 32vw;
+            }
+
+            /* Card on mobile needs to not fly too high */
+            .open .card {
+                transform: translateX(-50%) translateY(-320px) translateZ(100px) scale(1.02);
+                width: 90vw;
+                min-height: 380px;
+                padding: 30px 20px;
+            }
+
+            .card-content h2 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            .card-content .greeting-text {
+                font-size: 1.1rem;
+                line-height: 1.5;
+                margin-bottom: 20px;
+            }
+
+            .share-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .hint {
+                font-size: 0.7rem;
+                bottom: 20px;
+                padding: 8px 15px;
+            }
+        }
+
+        /* Share & QR Modal */
+        .share-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 90%;
+            width: 350px;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--primary);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        #qrcode {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content h3 {
+            font-family: 'Playfair Display', serif;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .modal-content p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: #eee;
+            border: 1px solid #ccc;
+            padding: 10px 25px;
+            border-radius: 20px;
+            color: #333;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin: 5px;
+        }
+
+        .print-modal {
+            background: var(--gold-gradient);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            color: #1a1a1a;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background"></div>
+    <div class="ambient-glow"></div>
+
+    <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="envelope">
+            <!-- Hidden inside -->
+            <div class="card">
+                <div class="card-content">
+                    <div
+                        style="font-family: 'Playfair Display', serif; letter-spacing: 5px; font-size: 0.7rem; color: #bbb; margin-bottom: 20px;">
+                        DOLCE</div>
+                    <h2>С 8 Марта!</h2>
+                    <p class="greeting-text" id="greetingText">
+                        С праздником весны!
+                    </p>
+                </div>
+            </div>
+
+            <div class="envelope-front">
+                <div class="front-left"></div>
+                <div class="front-right"></div>
+                <div class="front-bottom"></div>
+            </div>
+
+            <div class="top-flap">
+                <div class="wax-seal">D</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="share-btn" id="shareBtn" title="Поделиться">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+            <polyline points="16 6 12 2 8 6"></polyline>
+            <line x1="12" y1="2" x2="12" y2="15"></line>
+        </svg>
+    </button>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <h3>QR-код для печати</h3>
+            <p>1. Проверьте вашу ссылку в коде (строка 592)<br>
+                2. Распечатайте этот код и наклейте на подарок</p>
+            <div id="qrcode"></div>
+            <br>
+            <button class="print-modal" id="printQR">Открыть для печати</button>
+            <button class="close-modal" id="closeModal">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="hint" id="hint">Нажмите на печать, чтобы открыть</div>
+
+    <script>
+        // === НАСТРОЙКА ССЫЛКИ ===
+        // Вставьте сюда адрес вашего сайта после публикации:
+        const MY_WEBSITE_URL = "https://pink-emmaline-53.tiiny.site/";
+
+        const wrapper = document.getElementById('envelopeWrapper');
+        const hint = document.getElementById('hint');
+        const greetingTextElement = document.getElementById('greetingText');
+        const shareBtn = document.getElementById('shareBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeModal = document.getElementById('closeModal');
+        const printQRBtn = document.getElementById('printQR');
+        const qrcodeContainer = document.getElementById('qrcode');
+        let isOpen = false;
+        let qrcodeGenerated = false;
+
+        const targetUrl = MY_WEBSITE_URL !== "https://your-site-url.com" ? MY_WEBSITE_URL : window.location.href;
+
+        const greetings = [
+            "Пусть каждый Ваш день будет наполнен весенним теплом, нежностью и радостью! Пусть весна подарит Вам море улыбок и вдохновения.",
+            "Желаем Вам вечной красоты, гармонии и самых светлых моментов. Пусть весна всегда цветет в Вашем сердце, принося счастье.",
+            "Пусть сбываются все самые сокровенные мечты, а сердце всегда будет согрето любовью и заботой близких. Вы — само очарование!",
+            "Желаем Вам бесконечного вдохновения, море искренних улыбок и прекрасного весеннего настроения в этот чудесный день.",
+            "Пусть Ваша жизнь будет похожа на чудесный букет, полный ярких событий, комплиментов и самых приятных сюрпризов.",
+            "Расцветайте вместе с этой прекрасной весной и будьте самыми счастливыми! Пусть каждый момент приносит Вам истинную радость.",
+            "Эта весна обязательно подарит Вам крылья для новых достижений и много поводов для счастья. Оставайтесь всегда неповторимой!",
+            "Пусть первые весенние лучи принесут в Ваш дом уют, а в душу — спокойствие и веру в самое прекрасное. С праздником!",
+            "Желаем Вам, чтобы каждый новый день начинался с улыбки, а заканчивался ощущением полного счастья и удовлетворения.",
+            "Пусть весна окружит Вас вниманием, цветами и добрыми словами, которых Вы заслуживаете каждый день в году!",
+            "Пусть Ваша женственность и изящество продолжают восхищать окружающих, а жизнь будет полна любви и гармонии.",
+            "Желаем Вам весеннего сияния в глазах, легкости в каждом шаге и только добрых вестей. Будьте счастливы!",
+            "Пусть этот день станет началом удивительной весны, полной романтики, приятных встреч и исполнения заветных желаний.",
+            "Желаем Вам бесконечного запаса жизненных сил, солнечного настроения и море любви, которая будет греть Вас всегда.",
+            "Пусть музыка весны звучит в Вашем сердце, наполняя его восторгом, нежностью и бесконечной любовью к жизни.",
+            "Желаем Вам быть всегда окруженной заботой и красотой. Пусть каждый миг дарит повод для гордости собой!",
+            "Пусть Ваша красота расцветает с каждым днем, подобно весенним цветам, а мир вокруг становится ярче от Вашей улыбки.",
+            "Желаем, чтобы в Вашей жизни всегда было место для маленьких чудес, больших побед и искренней, бескорыстной любви!",
+            "Пусть эта весна будет особенной — самой теплой, самой нежной и самой запоминающейся в Вашей жизни!",
+            "Желаем Вам неиссякаемого оптимизма, внутреннего света и как можно больше поводов для самого искреннего смеха."
+        ];
+
+        // Randomly select a greeting
+        function setRandomGreeting() {
+            const randomIndex = Math.floor(Math.random() * greetings.length);
+            greetingTextElement.textContent = greetings[randomIndex];
+        }
+
+        // Set greeting immediately on load
+        setRandomGreeting();
+
+        wrapper.addEventListener('click', () => {
+            if (!isOpen) {
+                wrapper.classList.add('open');
+                hint.style.display = 'none';
+                startPetals();
+                isOpen = true;
+            }
+        });
+
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+
+            // Varied sizes and shapes
+            const size = Math.random() * 15 + 10;
+            const opacity = Math.random() * 0.5 + 0.5;
+            const rotation = Math.random() * 360;
+
+            petal.style.width = size + 'px';
+            petal.style.height = size * (0.8 + Math.random() * 0.4) + 'px';
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.opacity = opacity;
+            petal.style.transform = `rotate(${rotation}deg)`;
+
+            // Varied fall duration and delay
+            const duration = Math.random() * 5 + 5;
+            const delay = Math.random() * 2;
+            petal.style.animation = `petalFall ${duration}s linear ${delay}s forwards`;
+
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), (duration + delay) * 1000);
+        }
+
+        function startPetals() {
+            setInterval(createPetal, 350);
+        }
+
+        // Parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (!isOpen) {
+                const x = (window.innerWidth / 2 - e.clientX) / 30;
+                const y = (window.innerHeight / 2 - e.clientY) / 30;
+                wrapper.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
+            }
+        });
+
+        shareBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            if (!qrcodeGenerated) {
+                new QRCode(qrcodeContainer, {
+                    text: targetUrl,
+                    width: 250,
+                    height: 250,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                qrcodeGenerated = true;
+            }
+        });
+
+        printQRBtn.addEventListener('click', () => {
+            const qrImage = qrcodeContainer.querySelector('img').src;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>QR Code for Print</title>
+                        <style>
+                            body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; }
+                            img { width: 400px; height: 400px; margin-bottom: 20px; }
+                            h1 { color: #333; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>QR-код для открытки</h1>
+                        <img src="${qrImage}" />
+                        <p>Ссылка: ${targetUrl}</p>
+                        <script>window.onload = () => { window.print(); };</scr` + `ipt>
+                    </body>
+                </html>
+            `);
+        });
+
+        closeModal.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
