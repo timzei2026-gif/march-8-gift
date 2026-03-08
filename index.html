@@ -442,10 +442,10 @@
 
         .share-btn {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
             background: var(--gold-gradient);
             border-radius: 50%;
             display: flex;
@@ -453,13 +453,20 @@
             justify-content: center;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: none;
+            opacity: 0.6;
         }
 
         .share-btn:hover {
-            transform: scale(1.15) rotate(15deg);
+            transform: scale(1.1) rotate(15deg);
+            opacity: 1;
+        }
+
+        .share-btn svg {
+            width: 20px;
+            height: 20px;
         }
 
         /* Modal */
@@ -542,32 +549,37 @@
             .front-bottom {
                 border-left-width: 45vw;
                 border-right-width: 45vw;
+                border-left-width: 46vw;
+                border-right-width: 46vw;
                 border-bottom-width: 32vw;
             }
 
             .front-left,
             .front-right {
-                border-width: 28vw 45vw;
+                border-width: 28vw 46vw;
             }
 
             .top-flap {
-                border-left-width: 45vw;
-                border-right-width: 45vw;
+                border-left-width: 46vw;
+                border-right-width: 46vw;
                 border-top-width: 35vw;
             }
 
             .open .card {
-                width: 85vw;
-                transform: translateX(-50%) translateY(-350px) translateZ(100px) scale(1);
-                padding: 30px;
+                width: 90vw;
+                transform: translateX(-50%) translateY(-280px) translateZ(100px) scale(0.95);
+                padding: 25px 20px;
+                min-height: 480px;
             }
 
             .card-header {
                 font-size: 2.2rem;
+                margin-bottom: 10px;
             }
 
             .card-title {
                 font-size: 1.8rem;
+                margin-bottom: 15px;
             }
 
             .card-body {
